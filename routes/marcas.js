@@ -9,7 +9,6 @@ const { readFile } = fs;
 //maisModelos
 router.get("/maisModelos", async () => {
     try {
-
     } catch (err) {
         console.error(err);
     }
@@ -18,7 +17,6 @@ router.get("/maisModelos", async () => {
 //menosModelos
 router.get("/menosModelos", async () => {
     try {
-
     } catch (err) {
         console.error(err);
     }
@@ -36,7 +34,6 @@ router.get("/listaMaisModelos/:num", async () => {
 //listaMenosModelos/x
 router.get("/listaMenosModelos:num", async () => {
     try {
-
     } catch (err) {
         console.error(err);
     }
@@ -44,19 +41,21 @@ router.get("/listaMenosModelos:num", async () => {
 
 //POST
 //listaModelos
-router.post('/listaModelos', async (req, res) => {
+router.post("/listaModelos", async (req, res) => {
     try {
-
         let nomeMarca = req.body.nomeMarca;
         let data = JSON.parse(await readFile("./data/car-list.json", "utf-8"));
 
-        let filterData = data.find(marca => {
-            return nomeMarca.toLowerCase() === marca.brand.toLowerCase()
-        })
+        let filterData = data.find((marca) => {
+            return nomeMarca.toLowerCase() === marca.brand.toLowerCase();
+        });
 
         res.status(200);
-        res.send((filterData === undefined || filterData === null) ? [] : filterData.models);
-
+        res.send(
+            filterData === undefined || filterData === null
+                ? []
+                : filterData.models
+        );
     } catch (err) {
         console.error(err);
     }
