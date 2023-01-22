@@ -7,8 +7,31 @@ const { readFile } = fs;
 
 //GET
 //maisModelos
-router.get("/maisModelos", async () => {
+router.get("/maisModelos", async (req, res) => {
     try {
+        // Mercedes-Benz, Possui 58 modelos
+        let marcas = JSON.parse(
+            await readFile("./data/car-list-2.json", "utf-8")
+        );
+
+        let marcaMaioModelo = [];
+        let numModels = 0;
+
+        for (let i = 0; i < marcas.length; i++) {
+            //console.log(`A marca e : ${marcas[i].brand}, Possui ${marcas[i].models.length} modelos`);
+            if (marcas[i].models.length >= numModels) {
+                if (marcas[i].models.length === numModels) {
+                    marcaMaioModelo += `,${marcas[i].brand}`;
+                    numModels = +marcas[i].models.length;
+                } else {
+                    numModels = +marcas[i].models.length;
+                    marcaMaioModelo = `${marcas[i].brand}`;
+                }
+            }
+        }
+
+        res.status(200);
+        res.send([marcaMaioModelo]);
     } catch (err) {
         console.error(err);
     }
