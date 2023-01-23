@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import express from "express";
-import { log } from "console";
+
 
 const router = express.Router();
 const { readFile } = fs;
@@ -10,26 +10,28 @@ const { readFile } = fs;
 router.get("/maisModelos", async (req, res) => {
     try {
         let marcas = JSON.parse(
-            await readFile("./data/car-list.json", "utf-8")
+            await readFile("./data/car-list-2.json", "utf-8")
         );
 
-        let marcaMaisModelo;
+        let marcaMaisModelo = [];
         let numModels = null;
 
         for (let i = 0; i < marcas.length; i++) {
             if (marcas[i].models.length >= numModels) {
                 if (marcas[i].models.length === numModels) {
                     numModels = +marcas[i].models.length;
-                    marcaMaisModelo += `,${marcas[i].brand}`;
+                    marcaMaisModelo.push(marcas[i].brand);
                 } else {
                     numModels = +marcas[i].models.length;
-                    marcaMaisModelo = `${marcas[i].brand}`;
+                    marcaMaisModelo.push(marcas[i].brand);
                 }
             }
         }
 
+        console.log(marcas[0]);
+
         res.status(200);
-        res.send(marcaMaisModelo.split(","));
+        res.send(marcaMaisModelo);
     } catch (err) {
         console.error(err);
     }
@@ -67,7 +69,22 @@ router.get("/menosModelos", async (req, res) => {
 //listaMaisModelos/x
 router.get("/listaMaisModelos/:num", async (req, res) => {
     try {
-        req.params.num;
+        let numMax = req.params.num;
+        let totalModels = [];
+
+        let marcas = JSON.parse(
+            await readFile("./data/car-list-2.json", "utf-8")
+        );
+
+        for (let i = 0; i < marcas.length; i++) {
+            totalModels.push({"Marca": marcas[i].brand, "TotalModelo": marcas[i].models.length});
+        }
+
+        totalModels.sort(function (a, b) {
+            return +(a.value > b.value) || +(a.value === b.value) - 1;
+          });
+
+          console.log(totalModels);
 
         res.status(200);
         res.send(req.params.num);
@@ -79,7 +96,19 @@ router.get("/listaMaisModelos/:num", async (req, res) => {
 //listaMenosModelos/x
 router.get("/listaMenosModelos:num", async (req, res) => {
     try {
-        req.params.num;
+        let numMax = req.params.num;
+        
+        let marcas = JSON.parse(
+            await readFile("./data/car-list-2.json", "utf-8")
+        );
+
+        totalModels = [];
+
+        for (let i = 0; i < marcas.length; i++) {
+            totalModels.push({"Marca": marcas[i].brand, "TotalModelo": marcas[i].models.length});
+        }
+
+       console.log(totalModels);
 
         res.status(200);
         res.send(req.params.num);
