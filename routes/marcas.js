@@ -65,17 +65,24 @@ router.get("/menosModelos", async (req, res) => {
 });
 
 //listaMaisModelos/x
-router.get("/listaMaisModelos/:num", async () => {
+router.get("/listaMaisModelos/:num", async (req, res) => {
     try {
         req.params.num;
+
+        res.status(200);
+        res.send(req.params.num);
     } catch (err) {
         console.error(err);
     }
 });
 
 //listaMenosModelos/x
-router.get("/listaMenosModelos:num", async () => {
+router.get("/listaMenosModelos:num", async (req, res) => {
     try {
+        req.params.num;
+
+        res.status(200);
+        res.send(req.params.num);
     } catch (err) {
         console.error(err);
     }
