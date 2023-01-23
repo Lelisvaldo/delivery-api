@@ -9,37 +9,56 @@ const { readFile } = fs;
 //maisModelos
 router.get("/maisModelos", async (req, res) => {
     try {
-        // Mercedes-Benz, Possui 58 modelos
         let marcas = JSON.parse(
-            await readFile("./data/car-list-2.json", "utf-8")
+            await readFile("./data/car-list.json", "utf-8")
         );
 
-        let marcaMaioModelo = [];
-        let numModels = 0;
+        let marcaMaisModelo;
+        let numModels = null;
 
         for (let i = 0; i < marcas.length; i++) {
-            //console.log(`A marca e : ${marcas[i].brand}, Possui ${marcas[i].models.length} modelos`);
             if (marcas[i].models.length >= numModels) {
                 if (marcas[i].models.length === numModels) {
-                    marcaMaioModelo += `,${marcas[i].brand}`;
                     numModels = +marcas[i].models.length;
+                    marcaMaisModelo += `,${marcas[i].brand}`;
                 } else {
                     numModels = +marcas[i].models.length;
-                    marcaMaioModelo = `${marcas[i].brand}`;
+                    marcaMaisModelo = `${marcas[i].brand}`;
                 }
             }
         }
 
         res.status(200);
-        res.send([marcaMaioModelo]);
+        res.send(marcaMaisModelo.split(","));
     } catch (err) {
         console.error(err);
     }
 });
 
 //menosModelos
-router.get("/menosModelos", async () => {
+router.get("/menosModelos", async (req, res) => {
     try {
+        let marcas = JSON.parse(
+            await readFile("./data/car-list.json", "utf-8")
+        );
+
+        let marcaMenosModelo;
+        let numModels = 9999999;
+
+        for (let i = 0; i < marcas.length; i++) {
+            if (marcas[i].models.length <= numModels) {
+                if (marcas[i].models.length === numModels) {
+                    numModels = +marcas[i].models.length;
+                    marcaMenosModelo += `,${marcas[i].brand}`;
+                } else {
+                    numModels = +marcas[i].models.length;
+                    marcaMenosModelo = `${marcas[i].brand}`;
+                }
+            }
+        }
+
+        res.status(200);
+        res.send(marcaMenosModelo.split(","));
     } catch (err) {
         console.error(err);
     }
@@ -75,7 +94,7 @@ router.post("/listaModelos", async (req, res) => {
 
         res.status(200);
         res.send(
-            filterData === undefined || filterData === null
+            filterData == undefined || filterData == null
                 ? []
                 : filterData.models
         );
