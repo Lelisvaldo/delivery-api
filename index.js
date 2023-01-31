@@ -1,12 +1,12 @@
 import express from "express";
-import marcas from "./routes/marcas.js";
+import order from "./routes/order.js";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.use("/marcas", marcas);
+app.use("/order", order);
 
 app.listen(port, async () => {
     try {
