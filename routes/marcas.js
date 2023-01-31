@@ -1,8 +1,6 @@
 import { promises as fs } from "fs";
 import express from "express";
 
-
-
 const router = express.Router();
 const { readFile } = fs;
 const dataFile =  JSON.parse(await readFile("./data/car-list.json", "utf-8"));
