@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "715ff805-cc95-49a8-858b-fc9013873d75",
+		"_postman_id": "5a9653ee-85ec-4abb-bafe-057d49f1c0e2",
 		"name": "ProjectXP",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5244229"
+		"_exporter_id": "21840583"
 	},
 	"item": [
 		{
@@ -205,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 501,\r\n    \"cliente\": \"Cecilia de Castro\",\r\n    \"produto\": \"Bolo de Chocolate\",\r\n    \"valor\": 35.48,\r\n    \"entregue\": true \r\n}",
+							"raw": "{\r\n    \"id\": 501,\r\n    \"cliente\": \"Cecilia de Castro\",\r\n    \"produto\": \"Bolo de Chocolate\",\r\n    \"valor\": 35.50,\r\n    \"entregue\": true \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,13 +213,45 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/order/update",
+							"raw": "{{baseUrl}}/order/update/order",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"order",
-								"update"
+								"update",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStatusById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 501,\r\n    \"entregue\": false \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/update/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"update",
+								"status"
 							]
 						}
 					},

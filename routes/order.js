@@ -4,6 +4,7 @@ import express from "express";
 const router = express.Router();
 const { readFile, writeFile } = fs;
 const dataFile = JSON.parse(await readFile("./data/pedidos.json", "utf-8"));
+const products = [];
 
 //GET
 //getOrder
@@ -39,8 +40,8 @@ router.delete("/delete/:id", async (req, res) => {
 });
 
 //PUT
-//update
-router.put("/update", async (req, res) => {
+//update Order
+router.put("/update/order", async (req, res) => {
     try {
         if (isEmpty(req.body)) {
             res.status(404);
@@ -54,6 +55,8 @@ router.put("/update", async (req, res) => {
             );
         }
 
+        getProducts();
+
         let order = {};
         order.id = parseInt(req.body.id);
         order.cliente = req.body.cliente;
@@ -64,12 +67,53 @@ router.put("/update", async (req, res) => {
 
         let orderIndex = dataFile.pedidos.findIndex((o) => o.id === order.id);
 
-        let produto = dataFile.pedidos[orderIndex].produto;
+        let productExist = (products.filter((product) => order.produto == product) != false);
 
-        if (order.produto != produto) {
+        if (!productExist) {
             res.status(404);
             res.send("O Produto Informado não é um produto válido.");
         }
+
+        dataFile.pedidos[orderIndex] = order;
+
+        await writeFile(
+            "./data/pedidos.json",
+            JSON.stringify(dataFile, null, 5)
+        );
+
+        res.status(200);
+        res.send(order);
+    } catch (err) {
+        res.status(400).send({ error: err.message });
+    }
+});
+
+//update staus
+router.put("/update/status", async (req, res) => {
+    try {
+        let id = parseInt(req.body.id);
+
+        if (isEmpty(req.body)) {
+            res.status(404);
+            res.send("Informe os parâmetros necessários.");
+        }
+
+        if (!isBoolean(req.body.entregue)) {
+            res.status(404);
+            res.send(
+                "O parâmetro 'entregue' nao pode ser diferente de 'true' ou 'false'."
+            );
+        }
+
+        let orderIndex = dataFile.pedidos.findIndex((o) => o.id === id);
+
+        let order = {};
+        order.id        = dataFile.pedidos[orderIndex].id;
+        order.cliente   = dataFile.pedidos[orderIndex].cliente;
+        order.produto   = dataFile.pedidos[orderIndex].produto;
+        order.entregue  = req.body.entregue;
+        order.valor     = dataFile.pedidos[orderIndex].valor;
+        order.timestamp = new Date();
 
         dataFile.pedidos[orderIndex] = order;
 
@@ -117,12 +161,10 @@ router.post("/create", async (req, res) => {
     }
 });
 
-function isEmpty(object) {
-    return Object.keys(object).length === 0;
-}
+isEmpty = (object) => { return Object.keys(object).length === 0; }
 
-function isBoolean(variable) {
-    return typeof variable == "boolean";
-}
+isBoolean = (variable) => { return typeof variable == "boolean"; }
+
+getProducts = () => {  for (let order in dataFile.pedidos) { products.push(order.product) } }
 
 export default router;
