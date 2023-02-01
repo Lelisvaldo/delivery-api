@@ -54,6 +54,51 @@ router.get("/sunOrders/product/:name", async (req, res) => {
     }
 });
 
+//product/mostSelleds
+router.get("/product/mostSelleds", async (req, res) => {
+    try {
+
+        let totalProduct = [];
+        let result = [];
+
+        getProducts();
+
+        for (let i = 0; i < products.length; i++){
+            totalProduct.push({
+                Product: products[i],
+                Quantity: getTotalProduct(products[i])
+            });
+        }
+
+        // totalProduct
+        //     .sort((a, b) => b.Quantity - a.Quantity)
+        //     .sort((a, b) => (a.Brand > b.Brand ? 1 : -1));
+
+        // totalProduct.sort(function (a, b) {
+        //     var nameA = a.Brand.toUpperCase();
+        //     var nameB = b.Brand.toUpperCase();
+
+        //     if (nameA < nameB) return -1;
+        //     if (nameA > nameB) return 1;
+
+        //     return 0;
+        // });
+
+        // totalProduct.sort(function (a, b) {
+        //     return b.Quantity - a.Quantity;
+        // });
+
+        // for (let i = 0; i < numMax; i++)
+        //     result.push(`${totalProduct[i].Brand} - ${totalProduct[i].Quantity}`);
+
+        res.status(200);
+        res.send(result);
+    } catch (error) {
+        res.status(400).send({ error: err.message });
+    }
+});
+
+
 //DELETE
 //delete
 router.delete("/delete/:id", async (req, res) => {
@@ -199,6 +244,15 @@ const isEmpty = (object) => { return Object.keys(object).length === 0; }
 
 const isBoolean = (variable) => { return typeof variable == "boolean"; }
 
-const getProducts = () => {  for (let order in dataFile.pedidos) { products.push(order.product) } }
+const getProducts = () => {  dataFile.pedidos.every(pedido => products.push(pedido.product)) }
+
+
+
+const getTotalProduct = (productName) => {
+    let total = 0;
+    return dataFile.pedidos
+    .filter(pedido => String(pedido.produto).toLowerCase() ==  productName.toLowerCase())
+    .map(pedido => total += pedido.valor );
+}
 
 export default router;

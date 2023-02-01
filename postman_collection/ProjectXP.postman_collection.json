@@ -256,6 +256,98 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "sunOrdersByClientName",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order/sunOrders/client/Lavínia Dâmaso",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"sunOrders",
+								"client",
+								"Lavínia Dâmaso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sunOrdersByProductName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 501,\r\n    \"entregue\": false \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/sunOrders/product/mostSelleds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"sunOrders",
+								"product",
+								"mostSelleds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sunOrdersByProductName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 501,\r\n    \"entregue\": false \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/product/mostSelleds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"product",
+								"mostSelleds"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
