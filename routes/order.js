@@ -161,10 +161,10 @@ router.post("/create", async (req, res) => {
     }
 });
 
-isEmpty = (object) => { return Object.keys(object).length === 0; }
+const isEmpty = (object) => { return Object.keys(object).length === 0; }
 
-isBoolean = (variable) => { return typeof variable == "boolean"; }
+const isBoolean = (variable) => { return typeof variable == "boolean"; }
 
-getProducts = () => {  for (let order in dataFile.pedidos) { products.push(order.product) } }
+const getProducts = () => {  for (let order in dataFile.pedidos) { products.push(order.product) } }
 
 export default router;
