@@ -1,6 +1,5 @@
 import { promises as fs } from "fs";
 import express from "express";
-import { parse } from "path";
 
 const router = express.Router();
 const { readFile, writeFile } = fs;
@@ -39,6 +38,53 @@ router.delete("/delete/:id", async (req, res) => {
     }
 });
 
+//PUT
+//update
+router.put("/update", async (req, res) => {
+    try {
+        if (isEmpty(req.body)) {
+            res.status(404);
+            res.send("Informe os parâmetros necessários.");
+        }
+
+        if (!isBoolean(req.body.entregue)) {
+            res.status(404);
+            res.send(
+                "O parâmetro 'entregue' nao pode ser diferente de 'true' ou 'false'."
+            );
+        }
+
+        let order = {};
+        order.id = parseInt(req.body.id);
+        order.cliente = req.body.cliente;
+        order.produto = req.body.produto;
+        order.entregue = req.body.entregue;
+        order.valor = req.body.valor;
+        order.timestamp = new Date();
+
+        let orderIndex = dataFile.pedidos.findIndex((o) => o.id === order.id);
+
+        let produto = dataFile.pedidos[orderIndex].produto;
+
+        if (order.produto != produto) {
+            res.status(404);
+            res.send("O Produto Informado não é um produto válido.");
+        }
+
+        dataFile.pedidos[orderIndex] = order;
+
+        await writeFile(
+            "./data/pedidos.json",
+            JSON.stringify(dataFile, null, 5)
+        );
+
+        res.status(200);
+        res.send(order);
+    } catch (err) {
+        res.status(400).send({ error: err.message });
+    }
+});
+
 //POST
 //create
 router.post("/create", async (req, res) => {
@@ -71,26 +117,12 @@ router.post("/create", async (req, res) => {
     }
 });
 
-//update
-router.post("/update", async (req, res) => {
-    try {
-        let id = req.body.id;
-
-        let filterData = dataFile.pedidos.find((order) => {
-            return id === order.id;
-        });
-
-        res.status(200);
-        res.send(
-            filterData == undefined || filterData == null ? [] : filterData
-        );
-    } catch (err) {
-        res.status(400).send({ error: err.message });
-    }
-});
-
 function isEmpty(object) {
     return Object.keys(object).length === 0;
+}
+
+function isBoolean(variable) {
+    return typeof variable == "boolean";
 }
 
 export default router;

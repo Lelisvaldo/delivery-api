@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "715ff805-cc95-49a8-858b-fc9013873d75",
+		"name": "ProjectXP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5244229"
+	},
+	"item": [
+		{
+			"name": "car-list-api",
+			"item": [
+				{
+					"name": "listaModelos",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeMarca\": \"Ford\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/marcas/listaModelos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"marcas",
+								"listaModelos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "maisModelos",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/marcas/maisModelos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"marcas",
+								"maisModelos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "menosModelos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/marcas/menosModelos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"marcas",
+								"menosModelos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listaMaisModelos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/marcas/listaMaisModelos/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"marcas",
+								"listaMaisModelos",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listaMenosModelos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/marcas/listaMenosModelos/5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"marcas",
+								"listaMenosModelos",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "delivery-api",
+			"item": [
+				{
+					"name": "createOrder",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cliente\": \"Cecilia de Castro\",\r\n    \"produto\": \"Bolo de Chocolate\",\r\n    \"valor\": 35.48\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order/getOrder/501",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"getOrder",
+								"501"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrderById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order/delete/501",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"delete",
+								"501"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateOrderById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 501,\r\n    \"cliente\": \"Cecilia de Castro\",\r\n    \"produto\": \"Bolo de Chocolate\",\r\n    \"valor\": 35.48,\r\n    \"entregue\": true \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
