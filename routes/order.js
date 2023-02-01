@@ -20,6 +20,40 @@ router.get("/getOrder/:id", async (req, res) => {
     }
 });
 
+//sunOrders/client
+router.get("/sunOrders/client/:name", async (req, res) => {
+    try {
+        let clientName = req.params.name.toLowerCase();
+        let total = 0;
+
+        dataFile.pedidos
+        .filter(pedido => String(pedido.cliente).toLowerCase() ==  clientName && pedido.entregue)
+        .map(pedido => total += pedido.valor );
+
+        res.status(200);
+        res.json({'Total' : total});
+    } catch (error) {
+        res.status(400).send({ error: err.message });
+    }
+});
+
+//sunOrders/product
+router.get("/sunOrders/product/:name", async (req, res) => {
+    try {
+        let productName = req.params.name.toLowerCase();
+        let total = 0;
+
+        dataFile.pedidos
+        .filter(pedido => String(pedido.produto).toLowerCase() ==  productName && pedido.entregue)
+        .map(pedido => total += pedido.valor );
+
+        res.status(200);
+        res.json({'Total' : total});
+    } catch (error) {
+        res.status(400).send({ error: err.message });
+    }
+});
+
 //DELETE
 //delete
 router.delete("/delete/:id", async (req, res) => {
