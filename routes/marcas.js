@@ -3,7 +3,7 @@ import express from "express";
 
 const router = express.Router();
 const { readFile } = fs;
-const dataFile =  JSON.parse(await readFile("./data/car-list.json", "utf-8"));
+const dataFile = JSON.parse(await readFile("./data/car-list.json", "utf-8"));
 
 //GET
 //maisModelos
@@ -64,25 +64,26 @@ router.get("/listaMaisModelos/:num", async (req, res) => {
         let result = [];
 
         for (let i = 0; i < dataFile.length; i++)
-            totalModels.push({"Brand": dataFile[i].brand, "Quantity": dataFile[i].models.length});
+            totalModels.push({
+                Brand: dataFile[i].brand,
+                Quantity: dataFile[i].models.length,
+            });
 
-        totalModels.sort((a, b) => (b.Quantity - a.Quantity)).sort(
-            (a, b) => (a.Brand > b.Brand ? 1 : -1)
-        );
+        totalModels
+            .sort((a, b) => b.Quantity - a.Quantity)
+            .sort((a, b) => (a.Brand > b.Brand ? 1 : -1));
 
-        totalModels.sort(function(a, b) {
+        totalModels.sort(function (a, b) {
             var nameA = a.Brand.toUpperCase();
             var nameB = b.Brand.toUpperCase();
-            
-            if (nameA < nameB) 
-                return -1;
-            if (nameA > nameB)
-                return 1;
-            
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
             return 0;
         });
-        
-        totalModels.sort(function(a, b) {
+
+        totalModels.sort(function (a, b) {
             return b.Quantity - a.Quantity;
         });
 
@@ -105,14 +106,20 @@ router.get("/listaMenosModelos/:num", async (req, res) => {
         let result = [];
 
         for (let i = 0; i < dataFile.length; i++)
-            totalModels.push({"Brand": dataFile[i].brand, "Quantity": dataFile[i].models.length});
+            totalModels.push({
+                Brand: dataFile[i].brand,
+                Quantity: dataFile[i].models.length,
+            });
 
-        totalModels.sort((a, b) => (b.Quantity - a.Quantity))
-        .sort((a, b) => (a.Brand < b.Brand ? 1 : -1));
+        totalModels
+            .sort((a, b) => b.Quantity - a.Quantity)
+            .sort((a, b) => (a.Brand < b.Brand ? 1 : -1));
 
-        totalModels.sort(function(a, b) {
-            return b.Quantity - a.Quantity;
-        }).reverse();
+        totalModels
+            .sort(function (a, b) {
+                return b.Quantity - a.Quantity;
+            })
+            .reverse();
 
         for (let i = 0; i < numMax; i++)
             result.push(`${totalModels[i].Brand} - ${totalModels[i].Quantity}`);
