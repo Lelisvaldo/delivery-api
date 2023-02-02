@@ -27,11 +27,15 @@ router.get("/sunOrders/client/:name", async (req, res) => {
         let total = 0;
 
         dataFile.pedidos
-        .filter(pedido => String(pedido.cliente).toLowerCase() ==  clientName && pedido.entregue)
-        .map(pedido => total += pedido.valor );
+            .filter(
+                (pedido) =>
+                    String(pedido.cliente).toLowerCase() == clientName &&
+                    pedido.entregue
+            )
+            .map((pedido) => (total += pedido.valor));
 
         res.status(200);
-        res.json({'Total' : total});
+        res.json({ Total: total });
     } catch (error) {
         res.status(400).send({ error: err.message });
     }
@@ -44,11 +48,15 @@ router.get("/sunOrders/product/:name", async (req, res) => {
         let total = 0;
 
         dataFile.pedidos
-        .filter(pedido => String(pedido.produto).toLowerCase() ==  productName && pedido.entregue)
-        .map(pedido => total += pedido.valor );
+            .filter(
+                (pedido) =>
+                    String(pedido.produto).toLowerCase() == productName &&
+                    pedido.entregue
+            )
+            .map((pedido) => (total += pedido.valor));
 
         res.status(200);
-        res.json({'Total' : total});
+        res.json({ Total: total });
     } catch (error) {
         res.status(400).send({ error: err.message });
     }
@@ -57,47 +65,26 @@ router.get("/sunOrders/product/:name", async (req, res) => {
 //product/mostSelleds
 router.get("/product/mostSelleds", async (req, res) => {
     try {
+        const totalpedidos = [];
+        let pedidos = dataFile.pedidos;
 
-        let totalProduct = [];
-        let result = [];
-
-        getProducts();
-
-        for (let i = 0; i < products.length; i++){
-            totalProduct.push({
-                Product: products[i],
-                Quantity: getTotalProduct(products[i])
-            });
-        }
-
-        // totalProduct
-        //     .sort((a, b) => b.Quantity - a.Quantity)
-        //     .sort((a, b) => (a.Brand > b.Brand ? 1 : -1));
-
-        // totalProduct.sort(function (a, b) {
-        //     var nameA = a.Brand.toUpperCase();
-        //     var nameB = b.Brand.toUpperCase();
-
-        //     if (nameA < nameB) return -1;
-        //     if (nameA > nameB) return 1;
-
-        //     return 0;
-        // });
-
-        // totalProduct.sort(function (a, b) {
-        //     return b.Quantity - a.Quantity;
-        // });
-
-        // for (let i = 0; i < numMax; i++)
-        //     result.push(`${totalProduct[i].Brand} - ${totalProduct[i].Quantity}`);
+        pedidos.forEach((pedido) => {
+            let pedidoLocal = totalpedidos.find(
+                (p) => p.produto == pedido.produto
+            );
+            if (pedidoLocal != undefined) {
+                totalpedidos[totalpedidos.indexOf(pedidoLocal)].quantidade += 1;
+            } else {
+                totalpedidos.push({ produto: pedido.produto, quantidade: 1 });
+            }
+        });
 
         res.status(200);
-        res.send(result);
+        res.send(totalpedidos);
     } catch (error) {
         res.status(400).send({ error: err.message });
     }
 });
-
 
 //DELETE
 //delete
@@ -146,7 +133,8 @@ router.put("/update/order", async (req, res) => {
 
         let orderIndex = dataFile.pedidos.findIndex((o) => o.id === order.id);
 
-        let productExist = (products.filter((product) => order.produto == product) != false);
+        let productExist =
+            products.filter((product) => order.produto == product) != false;
 
         if (!productExist) {
             res.status(404);
@@ -187,11 +175,11 @@ router.put("/update/status", async (req, res) => {
         let orderIndex = dataFile.pedidos.findIndex((o) => o.id === id);
 
         let order = {};
-        order.id        = dataFile.pedidos[orderIndex].id;
-        order.cliente   = dataFile.pedidos[orderIndex].cliente;
-        order.produto   = dataFile.pedidos[orderIndex].produto;
-        order.entregue  = req.body.entregue;
-        order.valor     = dataFile.pedidos[orderIndex].valor;
+        order.id = dataFile.pedidos[orderIndex].id;
+        order.cliente = dataFile.pedidos[orderIndex].cliente;
+        order.produto = dataFile.pedidos[orderIndex].produto;
+        order.entregue = req.body.entregue;
+        order.valor = dataFile.pedidos[orderIndex].valor;
         order.timestamp = new Date();
 
         dataFile.pedidos[orderIndex] = order;
@@ -240,19 +228,27 @@ router.post("/create", async (req, res) => {
     }
 });
 
-const isEmpty = (object) => { return Object.keys(object).length === 0; }
+const isEmpty = (object) => {
+    return Object.keys(object).length === 0;
+};
 
-const isBoolean = (variable) => { return typeof variable == "boolean"; }
+const isBoolean = (variable) => {
+    return typeof variable == "boolean";
+};
 
-const getProducts = () => {  dataFile.pedidos.every(pedido => products.push(pedido.product)) }
-
-
+const getProducts = () => {
+    dataFile.pedidos.every((pedido) => products.push(pedido.product));
+};
 
 const getTotalProduct = (productName) => {
     let total = 0;
     return dataFile.pedidos
-    .filter(pedido => String(pedido.produto).toLowerCase() ==  productName.toLowerCase())
-    .map(pedido => total += pedido.valor );
-}
+        .filter(
+            (pedido) =>
+                String(pedido.produto).toLowerCase() ==
+                productName.toLowerCase()
+        )
+        .map((pedido) => (total += pedido.valor));
+};
 
 export default router;
