@@ -79,8 +79,10 @@ router.get("/product/mostSelleds", async (req, res) => {
             }
         });
 
+        let totalpedidosOrdenado = totalpedidos.sort((itemA, itemB) =>{ return itemA.quantidade < itemB.quantidade ? 1 : -1; })
+
         res.status(200);
-        res.send(totalpedidos);
+        res.send(totalpedidosOrdenado);
     } catch (error) {
         res.status(400).send({ error: err.message });
     }
